@@ -1,0 +1,19 @@
+ List<String> employees = new ArrayList<>();
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type","application/json");
+        connection.setConnectTimeout(5000);
+        connection.setReadTimeout(5000);
+
+        try(BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))){
+            String inputLine;
+            while ((inputLine = in.readLine())!=null){
+            employees.add(inputLine);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return employees;
+         private URL url = new URL("http://localhost:8080/employee");
+
