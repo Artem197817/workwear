@@ -17,13 +17,12 @@ public class EmployeeService {
         public List<Employee> parserJsonEmployee (String jsons){
             ObjectMapper mapper = new ObjectMapper();
             String [] jsonArr = jsons.substring(1,jsons.length()-1).replace("},{","}---{").split("---");
-            Arrays.stream(jsonArr).forEach(System.out::println);
             List<Employee> employees = new ArrayList<>();
             for (String str: jsonArr) {
                 try {
                     employees.add(mapper.readValue(str,Employee.class));
                 } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
             }
             return employees;
