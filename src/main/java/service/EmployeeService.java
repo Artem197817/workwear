@@ -4,18 +4,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import demo.workwear.model.Employee;
+import lombok.Data;
+import view.input.InputValue;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
+@Data
 public class EmployeeService {
+
+    private final InputValue inputValue;
 
         public List<Employee> parserJsonEmployee (String jsons){
             ObjectMapper mapper = new ObjectMapper();
-          //  mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
-
-           // mapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING,true);
             String [] jsonArr = jsons.substring(1,jsons.length()-1).replace("},{","}---{").split("---");
             Arrays.stream(jsonArr).forEach(System.out::println);
             List<Employee> employees = new ArrayList<>();
@@ -27,6 +27,17 @@ public class EmployeeService {
                 }
             }
             return employees;
+        }
+
+        public Map<String,String> createMapNewEmployee(){
+            Map<String,String> mapValue =new HashMap<>();
+            mapValue.put("firstName",inputValue.input("Имя"));
+            mapValue.put("lastName",inputValue.input("Фамилия"));
+            mapValue.put("patronymic",inputValue.input("Отчество"));
+            mapValue.put("productionDivision",inputValue.input("Участок"));
+            mapValue.put("company",inputValue.input("Компания"));
+            mapValue.put("specialization",inputValue.input("Проффессия"));
+            return  mapValue;
         }
     }
 
