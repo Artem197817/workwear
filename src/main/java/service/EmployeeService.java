@@ -35,7 +35,7 @@ public class EmployeeService {
             mapValue.put("patronymic",inputValue.input("Отчество"));
             mapValue.put("productionDivision",inputValue.input("Участок"));
             mapValue.put("company",inputValue.input("Компания"));
-            mapValue.put("specialization",inputValue.input("Проффессия"));
+            mapValue.put("specialization",inputValue.input("Профессия"));
             return  mapValue;
         }
     }

@@ -1,7 +1,9 @@
 import controller.EmployeeController;
+import controller.WorkShoesController;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.web.client.RestTemplate;
 import service.EmployeeService;
+import service.WorkShoesService;
 import view.input.InputValue;
 
 public class Main {
@@ -12,8 +14,11 @@ public class Main {
         employeeController.findAllEmployee().forEach(System.out::println);
        // employeeController.saveNewEmployee();
        // employeeController.deleteEmployee();
-        employeeController.findById();
-        employeeController.findAllEmployeeByProductionDivision().forEach(System.out::println);
-        employeeController.findAllEmployeeByLastName().forEach(System.out::println);
+        //employeeController.findById();
+       // employeeController.findAllEmployeeByProductionDivision().forEach(System.out::println);
+       // employeeController.findAllEmployeeByLastName().forEach(System.out::println);
+        WorkShoesService workShoesService = new WorkShoesService(inputValue);
+        WorkShoesController workShoesController = new WorkShoesController(restTemplate,workShoesService,inputValue);
+        workShoesController.saveNewWorkShoes();
     }
 }

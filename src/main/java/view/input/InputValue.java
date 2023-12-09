@@ -21,4 +21,15 @@ public class InputValue {
         }
         return result;
     }
+
+    public Integer inputInt(String message) {
+        int result;
+        try {
+            result = Integer.parseInt(input(message));
+        } catch (NumberFormatException e) {
+            System.out.println("Неверный формат числа. Введите число еще раз");
+            result = inputInt(message);
+        }
+        return result;
+    }
 }

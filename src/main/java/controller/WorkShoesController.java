@@ -3,6 +3,7 @@ package controller;
 import demo.workwear.model.WorkShoes;
 import demo.workwear.model.modelEnum.WorkShoesType;
 import lombok.Data;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 import service.WorkShoesService;
 import view.input.InputValue;
@@ -26,10 +27,18 @@ public class WorkShoesController {
         this.inputValue = inputValue;
     }
 
-    public Map<WorkShoesType, List<WorkShoes>> findAllWorkShoes() {
-        Map<WorkShoesType, List<WorkShoes>> workShoesTypeListMap;
+    public Map<WorkShoesType, List<List<WorkShoes>>> findAllWorkShoes() {
         String workShoes = restTemplate.getForObject(urlWorkShoes, String.class);
         assert workShoes != null;
-               return WorkShoesService.parserSortedWorkShoes(workShoes);
+               return workShoesService.parserSortedWorkShoes(workShoes);
+    }
+    public void saveNewWorkShoes (){
+        String urlSave = urlWorkShoes + "/save_shoes";
+        List<Map<String, String>> listMap = workShoesService.createMapNewWorkShoes();
+        for (Map<String,String> map:listMap) {
+            HttpEntity<Map<String, String>> request = new HttpEntity<>(map);
+            String response = restTemplate.postForObject(urlSave, request, String.class);
+            System.out.println(response);
+       }
     }
 }
