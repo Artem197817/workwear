@@ -25,5 +25,7 @@ public class Main {
         workShoesController.findAllWorkShoesNotSorted();
     //    workShoesController.deleteWorkShoes();
      //   workShoesController.findById();
+        workShoesController.findAllWorkShoesByWorkShoesSize();
+        workShoesController.findAllWorkShoesByWorkShoesType();
     }
 }

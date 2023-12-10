@@ -17,10 +17,7 @@ public class WorkShoesService {
 
     public Map<WorkShoesType, List<List<WorkShoes>>> parserSortedWorkShoes(String workShoes) {
         List<WorkShoes> workShoesList = parserWorkShoes(workShoes);
-        List<WorkShoes> workShoesListSortedNotIssue = workShoesList.stream()
-                .filter(x -> x.getWorkShoesStatus() == WorkShoes.NOT_ISSUE)
-                .sorted(Comparator.comparing(WorkShoes::getWorkShoesType))
-                .toList();
+        List<WorkShoes> workShoesListSortedNotIssue = sortedWorkShoesNotIssue(workShoesList);
         Map<WorkShoesType, List<List<WorkShoes>>> workShoesTypeListMap = new HashMap<>();
         WorkShoesType workShoesType = workShoesListSortedNotIssue.get(0).getWorkShoesType();
         List<WorkShoes> workShoesTemp = new ArrayList<>();
@@ -37,6 +34,12 @@ public class WorkShoesService {
 
         }
         return workShoesTypeListMap;
+    }
+    public List<WorkShoes> sortedWorkShoesNotIssue(List<WorkShoes> workShoesList){
+       return workShoesList.stream()
+                .filter(x -> x.getWorkShoesStatus() == WorkShoes.NOT_ISSUE)
+                .sorted(Comparator.comparing(WorkShoes::getWorkShoesType))
+                .toList();
     }
 
     private List<List<WorkShoes>> sortedWorkShoesSize(List<WorkShoes> workShoesList) {

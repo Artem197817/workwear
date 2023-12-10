@@ -62,4 +62,23 @@ public class WorkShoesController {
     public void findAllWorkShoesNotSorted (){
        output.outputList( workShoesService.parserWorkShoes(findAllWorkShoes()));
     }
+   public List<WorkShoes> findAllWorkShoesByWorkShoesSize (){
+        String url = urlWorkShoes + "/work_shoes_size/{workShoesSize}";
+       String workShoes = restTemplate.getForObject(url, String.class,inputValue.inputInt("Размер"));
+       assert workShoes != null;
+       List<WorkShoes> workShoesList = workShoesService.parserWorkShoes(workShoes);
+       output.outputList(workShoesService.sortedWorkShoesNotIssue(workShoesList));
+       return workShoesList;
+    }
+
+    public List<WorkShoes> findAllWorkShoesByWorkShoesType (){
+        String url = urlWorkShoes + "/work_shoes_type/{workShoesType}";
+        WorkShoesType workShoesType = WorkShoesType.getType(inputValue.input("Тип обуви"));
+        String workShoes = restTemplate.getForObject(url, String.class,workShoesType);
+        assert workShoes != null;
+        List<WorkShoes> workShoesList = workShoesService.parserWorkShoes(workShoes);
+        output.outputList(workShoesService.sortedWorkShoesNotIssue(workShoesList));
+        return workShoesList;
+    }
 }
+
