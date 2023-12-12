@@ -4,12 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import demo.workwear.model.WorkShoes;
 import demo.workwear.model.modelEnum.WorkShoesType;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import view.input.InputValue;
 
 import java.util.*;
 
-@Data
+@AllArgsConstructor
 public class WorkShoesService {
 
     private final InputValue inputValue;
@@ -75,14 +75,6 @@ public class WorkShoesService {
         return mapList;
     }
 
-    public Map<String, String> createMapNewWorkShoesTemp() {
-        Map<String, String> mapValue = new HashMap<>();
-        mapValue.put("modelWorkShoes", inputValue.input("Модель"));
-        mapValue.put("workShoesSize", inputValue.input("Размер"));
-        mapValue.put("workShoesType", inputValue.input("Тип"));
-
-        return mapValue;
-    }
 
     public List<WorkShoes> parserWorkShoes(String workShoes) {
         ObjectMapper mapper = new ObjectMapper();

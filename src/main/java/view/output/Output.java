@@ -1,7 +1,9 @@
 package view.output;
 
 import demo.workwear.model.WorkShoes;
+import demo.workwear.model.WorkWear;
 import demo.workwear.model.modelEnum.WorkShoesType;
+import demo.workwear.model.modelEnum.WorkWearType;
 
 import java.util.List;
 import java.util.Map;
@@ -20,5 +22,13 @@ public class Output {
     }
     public <E> void outputList (List<E> list){
         list.forEach(System.out::println);
+    }
+
+    public void outputMapWorkWear(Map<WorkWearType, List<List<WorkWear>>> parserSortedWorkWear) {
+
+    }
+
+    public  void output(String message) {
+        System.out.println(message);
     }
 }
