@@ -1,6 +1,6 @@
 package service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import demo.workwear.model.WorkShoes;
 import demo.workwear.model.modelEnum.WorkShoesType;
@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import view.input.InputValue;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class WorkShoesService {
@@ -15,8 +16,8 @@ public class WorkShoesService {
     private final InputValue inputValue;
 
 
-    public Map<WorkShoesType, List<List<WorkShoes>>> parserSortedWorkShoes(String workShoes) {
-        List<WorkShoes> workShoesList = parserWorkShoes(workShoes);
+    public Map<WorkShoesType, List<List<WorkShoes>>> parserSortedWorkShoes(Object [] objects) {
+        List<WorkShoes> workShoesList = parserWorkShoes(objects);
         List<WorkShoes> workShoesListSortedNotIssue = sortedWorkShoesNotIssue(workShoesList);
         Map<WorkShoesType, List<List<WorkShoes>>> workShoesTypeListMap = new HashMap<>();
         WorkShoesType workShoesType = workShoesListSortedNotIssue.get(0).getWorkShoesType();
@@ -76,17 +77,10 @@ public class WorkShoesService {
     }
 
 
-    public List<WorkShoes> parserWorkShoes(String workShoes) {
+    public List<WorkShoes> parserWorkShoes(Object[] objects) {
         ObjectMapper mapper = new ObjectMapper();
-        String[] jsonArr = workShoes.substring(1, workShoes.length() - 1).replace("},{", "}---{").split("---");
-        List<WorkShoes> workShoesList = new ArrayList<>();
-        for (String str : jsonArr) {
-            try {
-                workShoesList.add(mapper.readValue(str, WorkShoes.class));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-        }
-        return workShoesList;
+        return Arrays.stream(objects)
+                .map(object ->mapper.convertValue(object, WorkShoes.class))
+                .collect(Collectors.toList());
     }
 }

@@ -4,6 +4,7 @@ import demo.workwear.model.Employee;
 import demo.workwear.model.modelEnum.ProductionDivision;
 import lombok.Data;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import service.EmployeeService;
 import view.input.InputValue;
@@ -27,12 +28,12 @@ public class EmployeeController {
     }
 
     public List<Employee> findAllEmployee() {
-        List<Employee> employees;
-        String employee = restTemplate.getForObject(urlEmployee, String.class);
-        assert employee != null;
-        employees = employeeService.parserJsonEmployee(employee);
+        ResponseEntity<Object[]> responseEntity =
+                restTemplate.getForEntity(urlEmployee, Object[].class);
+        Object[] objects = responseEntity.getBody();
+        assert objects != null;
+       return employeeService.parserJsonEmployee(objects);
 
-        return employees;
     }
 
     public void saveNewEmployee() {
@@ -60,22 +61,20 @@ public class EmployeeController {
 
     public List<Employee> findAllEmployeeByProductionDivision() {
         String url = urlEmployee + "/pd/{productionDivision}";
-        List<Employee> employees;
         ProductionDivision productionDivision = ProductionDivision.getType(inputValue.input("Участок"));
-        String employee = restTemplate.getForObject(url, String.class, productionDivision);
-        assert employee != null;
-        employees = employeeService.parserJsonEmployee(employee);
+        ResponseEntity<Object[]> responseEntity =
+                restTemplate.getForEntity(url, Object[].class,productionDivision);
+        Object[] objects = responseEntity.getBody();
+        assert objects != null;
+        return employeeService.parserJsonEmployee(objects);
 
-        return employees;
     }
 
     public List<Employee> findAllEmployeeByLastName() {
         String url = urlEmployee + "/last_name/{lastName}";
-        List<Employee> employees;
-        String employee = restTemplate.getForObject(url, String.class, inputValue.input("Фамилия"));
-        assert employee != null;
-        employees = employeeService.parserJsonEmployee(employee);
-
-        return employees;
+        ResponseEntity<Object[]> responseEntity = restTemplate.getForEntity(url,Object[].class,inputValue.input("Фамилия"));
+        Object[] objects = responseEntity.getBody();
+        assert objects != null;
+      return employeeService.parserJsonEmployee(objects);
     }
 }

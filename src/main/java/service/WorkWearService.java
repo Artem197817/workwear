@@ -3,19 +3,21 @@ package service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import demo.workwear.model.WorkWear;
+import demo.workwear.model.modelEnum.WorkWearHeight;
 import demo.workwear.model.modelEnum.WorkWearSize;
 import demo.workwear.model.modelEnum.WorkWearType;
 import lombok.AllArgsConstructor;
 import view.input.InputValue;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class WorkWearService {
 
    private final InputValue inputValue;
-    public Map<WorkWearType, List<List<WorkWear>>> parserSortedWorkWear(String workWear) {
-        List<WorkWear> workWearList = parserWorkWear(workWear);
+    public Map<WorkWearType, List<List<WorkWear>>> parserSortedWorkWear(Object[] objects) {
+        List<WorkWear> workWearList = parserWorkWear(objects);
         List<WorkWear> workWearListSortedNotIssue = sortedWorkWearNotIssue(workWearList);
         Map<WorkWearType, List<List<WorkWear>>> workWearTypeListMap = new HashMap<>();
         WorkWearType workWearType = workWearListSortedNotIssue.get(0).getWorkWearType();
@@ -63,18 +65,12 @@ public class WorkWearService {
                 .toList();
     }
 
-    public List<WorkWear> parserWorkWear(String workWear) {
+    public List<WorkWear> parserWorkWear(Object[] object) {
         ObjectMapper mapper = new ObjectMapper();
-        String[] jsonArr = workWear.substring(1, workWear.length() - 1).replace("},{", "}---{").split("---");
-        List<WorkWear> workWearList = new ArrayList<>();
-        for (String str : jsonArr) {
-            try {
-                workWearList.add(mapper.readValue(str, WorkWear.class));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-        }
-        return workWearList;
+        return Arrays.stream(object)
+                .map(x->mapper.convertValue(object,WorkWear.class))
+                .collect(Collectors.toList());
+
     }
 
     public List<Map<String, String>> createMapNewWorkWear() {

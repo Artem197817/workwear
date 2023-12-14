@@ -8,24 +8,18 @@ import lombok.Data;
 import view.input.InputValue;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 public class EmployeeService {
 
     private final InputValue inputValue;
 
-        public List<Employee> parserJsonEmployee (String jsons){
+        public List<Employee> parserJsonEmployee (Object[] objects){
             ObjectMapper mapper = new ObjectMapper();
-            String [] jsonArr = jsons.substring(1,jsons.length()-1).replace("},{","}---{").split("---");
-            List<Employee> employees = new ArrayList<>();
-            for (String str: jsonArr) {
-                try {
-                    employees.add(mapper.readValue(str,Employee.class));
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-            }
-            return employees;
+            return Arrays.stream(objects)
+                    .map(object ->mapper.convertValue(object, Employee.class))
+                    .collect(Collectors.toList());
         }
 
         public Map<String,String> createMapNewEmployee(){
