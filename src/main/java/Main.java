@@ -1,10 +1,7 @@
-import controller.EmployeeController;
-import controller.WorkShoesController;
-import controller.WorkWearController;
+import controller.*;
+import demo.workwear.model.WorkShoesTotal;
 import org.springframework.web.client.RestTemplate;
-import service.EmployeeService;
-import service.WorkShoesService;
-import service.WorkWearService;
+import service.*;
 import view.input.InputValue;
 import view.output.Output;
 
@@ -27,12 +24,21 @@ public class Main {
         //workShoesController.findAllWorkShoesNotSorted();
     //    workShoesController.deleteWorkShoes();
      //   workShoesController.findById();
-       // workShoesController.findAllWorkShoesByWorkShoesSize();
-        // workShoesController.findAllWorkShoesByWorkShoesType();
+        //  workShoesController.findAllWorkShoesByWorkShoesSize().forEach(System.out::println);
+       // workShoesController.findAllWorkShoesByWorkShoesType().forEach(System.out::println);
         WorkWearService workWearService = new WorkWearService(inputValue);
         WorkWearController workWearController = new WorkWearController(restTemplate,workWearService,inputValue,output);
        // workWearController.saveAllNewWorkWear();
         //workWearController.findAllWorkWearNotSorted();
        // workWearController.findAllWorkWearByWorkWearType();
+        WorkWearTotalService workWearTotalService = new WorkWearTotalService();
+        WorkWearTotalController workWearTotalController = new WorkWearTotalController(restTemplate,workWearTotalService,inputValue);
+       // workWearTotalController.findAllWorkWearSortedNumber().forEach(System.out::println);
+        //workWearTotalController.findWorkWearByTypeSortedNumber().forEach(System.out::println);
+       // workWearTotalController.findWorkWearBySizeSortedNumber().forEach(System.out::println);
+        WorkShoesTotalController workShoesTotalController = new WorkShoesTotalController(restTemplate,new WorkShoesTotalService(),inputValue);
+        //workShoesTotalController.findWorkShoesByTypeSortedNumber().forEach(System.out::println);
+        workShoesTotalController.findAllWorkShoesSortedNumber().forEach(System.out::println);
+        workShoesTotalController.findWorkShoesBySizeSortedNumber().forEach(System.out::println);
     }
 }

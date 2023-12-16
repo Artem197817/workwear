@@ -1,8 +1,6 @@
 package controller;
 
 import demo.workwear.model.WorkWear;
-import demo.workwear.model.modelEnum.WorkWearSize;
-import demo.workwear.model.modelEnum.WorkWearType;
 import lombok.Data;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
@@ -23,11 +21,10 @@ public class WorkWearController {
 
     private final String urlWorkWear = "http://localhost:8080/work_wear";
 
-    public Object[] findAllWorkWear() {
+    public List<WorkWear> findAllWorkWear() {
         Object[] objects = restTemplate.getForEntity(urlWorkWear, Object[].class).getBody();
         assert objects != null;
-        output.outputMapWorkWear(workWearService.parserSortedWorkWear(objects));
-        return objects;
+        return workWearService.parserWorkWear(objects);
     }
 
     public void saveAllNewWorkWear() {
@@ -45,41 +42,14 @@ public class WorkWearController {
 
     public WorkWear findById() {
         String url = urlWorkWear + "/{id}";
-        WorkWear workWear = restTemplate.getForObject(url, WorkWear.class, inputValue.inputLong("id"));
-        System.out.println(workWear);
-        return workWear;
-    }
-
-    public void findAllWorkWearNotSorted() {
-        output.outputList(workWearService.parserWorkWear(findAllWorkWear()));
+        return restTemplate.getForObject(url, WorkWear.class, inputValue.inputLong("id"));
     }
 
     public List<WorkWear> findAllWorkWearByModelWorkWear() {
         String url = urlWorkWear + "/work_wear_model/{modelWorkWear}";
         Object[] objects = restTemplate.getForEntity(url, Object[].class, inputValue.input("Модель")).getBody();
         assert objects != null;
-        List<WorkWear> workWearList = workWearService.parserWorkWear(objects);
-        output.outputList(workWearService.sortedWorkWearNotIssue(workWearList));
-        return workWearList;
+        return workWearService.parserWorkWear(objects);
     }
 
-    public List<WorkWear> findAllWorkWearByWorkWearType() {
-        String url = urlWorkWear + "/work_wear_type/{workWearType}";
-        WorkWearType workWearType = WorkWearType.getType(inputValue.input("Тип"));
-        Object[] objects = restTemplate.getForEntity(url, Object[].class, workWearType).getBody();
-        assert objects != null;
-        List<WorkWear> workWearList = workWearService.parserWorkWear(objects);
-        output.outputList(workWearService.sortedWorkWearNotIssue(workWearList));
-        return workWearList;
-    }
-
-    public List<WorkWear> findAllWorkWearByWorkWearSize() {
-        String url = urlWorkWear + "/work_wear_size/{workWearSize}";
-        WorkWearSize workWearSize = WorkWearSize.getType(inputValue.input("Рост"));
-        Object[] objects = restTemplate.getForEntity(url, Object[].class, workWearSize).getBody();
-        assert objects != null;
-        List<WorkWear> workWearList = workWearService.parserWorkWear(objects);
-        output.outputList(workWearService.sortedWorkWearNotIssue(workWearList));
-        return workWearList;
-    }
 }

@@ -34,12 +34,11 @@ public class WorkShoesController {
         this.output = output;
     }
 
-    public Object[] findAllWorkShoes() {
+    public List<WorkShoes> findAllWorkShoes() {
         ResponseEntity<Object[]> responseEntity = restTemplate.getForEntity(urlWorkShoes, Object[].class);
         Object[] objects = responseEntity.getBody();
         assert objects != null;
-        output.outputMapWorkShoes(workShoesService.parserSortedWorkShoes(objects));
-        return objects;
+        return workShoesService.parserWorkShoes(objects);
     }
 
     public void saveNewWorkShoes() {
@@ -64,17 +63,11 @@ public class WorkShoesController {
         return workShoes;
     }
 
-    public void findAllWorkShoesNotSorted() {
-        output.outputList(workShoesService.parserWorkShoes(findAllWorkShoes()));
-    }
-
     public List<WorkShoes> findAllWorkShoesByWorkShoesSize() {
         String url = urlWorkShoes + "/work_shoes_size/{workShoesSize}";
         Object[] objects = restTemplate.getForEntity(url, Object[].class, inputValue.inputInt("Размер")).getBody();
         assert objects != null;
-        List<WorkShoes> workShoesList = workShoesService.parserWorkShoes(objects);
-        output.outputList(workShoesService.sortedWorkShoesNotIssue(workShoesList));
-        return workShoesList;
+        return workShoesService.parserWorkShoes(objects);
     }
 
     public List<WorkShoes> findAllWorkShoesByWorkShoesType() {
@@ -83,9 +76,7 @@ public class WorkShoesController {
         ResponseEntity<Object[]> responseEntity = restTemplate.getForEntity(url, Object[].class, workShoesType);
         Object[] objects = responseEntity.getBody();
         assert objects != null;
-        List<WorkShoes> workShoesList = workShoesService.parserWorkShoes(objects);
-        output.outputList(workShoesService.sortedWorkShoesNotIssue(workShoesList));
-        return workShoesList;
+        return workShoesService.parserWorkShoes(objects);
     }
 }
 
