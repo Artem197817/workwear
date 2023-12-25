@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import service.EmployeeService;
 import view.input.InputValue;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -39,8 +40,12 @@ public class EmployeeController {
     public void saveNewEmployee() {
         String url = urlEmployee + "/save_employee";
         HttpEntity<Map<String, String>> request = new HttpEntity<>(employeeService.createMapNewEmployee());
-        String response = restTemplate.postForObject(url, request, String.class);
-        System.out.println(response);
+        try {
+            String response = restTemplate.postForObject(url, request, String.class);
+            System.out.println(response);
+        }catch (Exception e){
+            System.out.println("Неверно заданы параметры");
+        }
     }
 
     public void deleteEmployee() {
@@ -72,9 +77,14 @@ public class EmployeeController {
 
     public List<Employee> findAllEmployeeByLastName() {
         String url = urlEmployee + "/last_name/{lastName}";
-        ResponseEntity<Object[]> responseEntity = restTemplate.getForEntity(url,Object[].class,inputValue.input("Фамилия"));
-        Object[] objects = responseEntity.getBody();
-        assert objects != null;
-      return employeeService.parserJsonEmployee(objects);
+        try {
+            ResponseEntity<Object[]> responseEntity = restTemplate.getForEntity(url, Object[].class, inputValue.input("Фамилия"));
+            Object[] objects = responseEntity.getBody();
+            assert objects != null;
+            return employeeService.parserJsonEmployee(objects);
+        } catch (Exception e){
+            System.out.println("Неверно заданы параметры");
+        }
+        return new ArrayList<>();
     }
 }

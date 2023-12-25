@@ -46,8 +46,12 @@ public class WorkShoesController {
         List<Map<String, String>> listMap = workShoesService.createMapNewWorkShoes();
         for (Map<String, String> map : listMap) {
             HttpEntity<Map<String, String>> request = new HttpEntity<>(map);
-            String response = restTemplate.postForObject(urlSave, request, String.class);
-            System.out.println(response);
+            try {
+                String response = restTemplate.postForObject(urlSave, request, String.class);
+                System.out.println(response);
+            }catch (Exception e){
+                System.out.println("Неверно заданы параметры");
+            }
         }
     }
 

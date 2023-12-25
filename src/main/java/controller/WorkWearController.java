@@ -31,8 +31,13 @@ public class WorkWearController {
         String url = urlWorkWear + "/save_all_wear";
         List<Map<String, String>> listMap = workWearService.createMapNewWorkWear();
         HttpEntity<List<Map<String, String>>> request = new HttpEntity<>(listMap);
-        String response = restTemplate.postForObject(url, request, String.class);
-        output.output(response);
+        try {
+            String response = restTemplate.postForObject(url, request, String.class);
+            output.output(response);
+        }catch(Exception e){
+            output.output("Неверно заданы параметры");
+        }
+
     }
 
     public void deleteWorkWear() {
