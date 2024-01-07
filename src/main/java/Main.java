@@ -28,15 +28,19 @@ public class Main {
         WorkWearService workWearService = new WorkWearService(inputValue);
         WorkWearController workWearController = new WorkWearController(restTemplate,workWearService,inputValue,output);
         ///workWearController.saveAllNewWorkWear();
-       /// workWearController.findAllWorkWearByWorkWearType();
+        //workWearController.findAllWorkWearByWorkWearType();
         WorkWearTotalService workWearTotalService = new WorkWearTotalService();
         WorkWearTotalController workWearTotalController = new WorkWearTotalController(restTemplate,workWearTotalService,inputValue);
-        workWearTotalController.findAllWorkWearSortedNumber().forEach(System.out::println);
+        // workWearTotalController.findAllWorkWearSortedNumber().forEach(System.out::println);
        /// workWearTotalController.findWorkWearByTypeSortedNumber().forEach(System.out::println);
-        workWearTotalController.findWorkWearBySizeSortedNumber().forEach(System.out::println);
+       // workWearTotalController.findWorkWearBySizeSortedNumber().forEach(System.out::println);
         WorkShoesTotalController workShoesTotalController = new WorkShoesTotalController(restTemplate,new WorkShoesTotalService(),inputValue);
         //workShoesTotalController.findWorkShoesByTypeSortedNumber().forEach(System.out::println);
        /// workShoesTotalController.findAllWorkShoesSortedNumber().forEach(System.out::println);
        /// workShoesTotalController.findWorkShoesBySizeSortedNumber().forEach(System.out::println);
+        WorkWearIssueService workWearIssueService = new WorkWearIssueService(employeeController,inputValue,output,workWearController,workWearService);
+        WorkWearIssuedController workWearIssuedController = new WorkWearIssuedController(restTemplate,workWearIssueService,inputValue,output);
+        //workWearIssuedController.saveWorkWearIssued();
+        workWearIssuedController.findAllWorkWearIssued();
     }
 }

@@ -1,6 +1,7 @@
 package controller;
 
 import demo.workwear.model.WorkWear;
+import demo.workwear.model.modelEnum.WorkWearType;
 import lombok.Data;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
@@ -8,6 +9,7 @@ import service.WorkWearService;
 import view.input.InputValue;
 import view.output.Output;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +36,7 @@ public class WorkWearController {
         try {
             String response = restTemplate.postForObject(url, request, String.class);
             output.output(response);
-        }catch(Exception e){
+        } catch (Exception e) {
             output.output("Неверно заданы параметры");
         }
 
@@ -57,4 +59,16 @@ public class WorkWearController {
         return workWearService.parserWorkWear(objects);
     }
 
+    public List<WorkWear> findAllWorkWearByWorkWearType() {
+        String url = urlWorkWear + "/work_wear_type/{workWearType}";
+        WorkWearType workWearType = WorkWearType.getType(inputValue.input("Тип спецодежды"));
+        try {
+            Object[] objects = restTemplate.getForEntity(url, Object[].class, workWearType).getBody();
+            assert objects != null;
+            return workWearService.parserWorkWear(objects);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
 }

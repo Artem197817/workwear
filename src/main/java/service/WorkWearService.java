@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class WorkWearService {
 
-   private final InputValue inputValue;
+    private final InputValue inputValue;
 
 
     public List<WorkWear> sortedWorkWearNotIssue(List<WorkWear> workWearList) {
@@ -23,17 +23,17 @@ public class WorkWearService {
                 .toList();
     }
 
-    public List<WorkWear> parserWorkWear(Object[] object) {
+    public List<WorkWear> parserWorkWear(Object[] objects) {
         ObjectMapper mapper = new ObjectMapper();
-        return Arrays.stream(object)
-                .map(x->mapper.convertValue(object,WorkWear.class))
+        return Arrays.stream(objects)
+                .map(x -> mapper.convertValue(x, WorkWear.class))
                 .collect(Collectors.toList());
 
     }
 
     public List<Map<String, String>> createMapNewWorkWear() {
         Map<String, String> mapValue = new HashMap<>();
-         mapValue.put("modelWorkWear", inputValue.input("Модель"));
+        mapValue.put("modelWorkWear", inputValue.input("Модель"));
         mapValue.put("workWearType", inputValue.input("Тип"));
         mapValue.put("workWearSize", inputValue.input("Размер"));
         mapValue.put("workWearHeight", inputValue.input("Рост"));

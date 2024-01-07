@@ -59,6 +59,10 @@ public class EmployeeController {
         System.out.println(employee);
         return employee;
     }
+    public Employee findById(Long id) {
+        String url = urlEmployee + "/{id}";
+        return restTemplate.getForObject(url, Employee.class, id);
+    }
 
     public Employee updateEmployee() {
         return null;
@@ -75,10 +79,10 @@ public class EmployeeController {
 
     }
 
-    public List<Employee> findAllEmployeeByLastName() {
+    public List<Employee> findEmployeeByLastName() {
         String url = urlEmployee + "/last_name/{lastName}";
         try {
-            ResponseEntity<Object[]> responseEntity = restTemplate.getForEntity(url, Object[].class, inputValue.input("Фамилия"));
+            ResponseEntity<Object[]> responseEntity = restTemplate.getForEntity(url, Object[].class, inputValue.input("Фамилия сотрудника"));
             Object[] objects = responseEntity.getBody();
             assert objects != null;
             return employeeService.parserJsonEmployee(objects);
