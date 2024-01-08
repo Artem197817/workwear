@@ -55,7 +55,7 @@ public class EmployeeController {
 
     public Employee findById() {
         String url = urlEmployee + "/{id}";
-        Employee employee = restTemplate.getForObject(url, Employee.class, inputValue.inputLong("id"));
+        Employee employee = restTemplate.getForObject(url, Employee.class, inputValue.inputLong("id сотрудника"));
         System.out.println(employee);
         return employee;
     }

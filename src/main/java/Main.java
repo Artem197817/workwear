@@ -10,7 +10,8 @@ public class Main {
         RestTemplate restTemplate = new RestTemplate();
         InputValue inputValue = new InputValue();
         Output output = new Output();
-        EmployeeController employeeController = new EmployeeController(restTemplate,inputValue,new EmployeeService(inputValue));
+        EmployeeService employeeService = new EmployeeService(inputValue);
+        EmployeeController employeeController = new EmployeeController(restTemplate,inputValue,employeeService);
         employeeController.findAllEmployee().forEach(System.out::println);
         ///employeeController.saveNewEmployee();
        /// employeeController.deleteEmployee();
@@ -39,8 +40,13 @@ public class Main {
        /// workShoesTotalController.findAllWorkShoesSortedNumber().forEach(System.out::println);
        /// workShoesTotalController.findWorkShoesBySizeSortedNumber().forEach(System.out::println);
         WorkWearIssueService workWearIssueService = new WorkWearIssueService(employeeController,inputValue,output,workWearController,workWearService);
-        WorkWearIssuedController workWearIssuedController = new WorkWearIssuedController(restTemplate,workWearIssueService,inputValue,output);
+        WorkWearIssuedController workWearIssuedController = new WorkWearIssuedController(restTemplate,workWearIssueService,
+                inputValue,output);
         //workWearIssuedController.saveWorkWearIssued();
-        workWearIssuedController.findAllWorkWearIssued();
+        workWearIssuedController.findAllWorkWearIssued().forEach(System.out::println);
+        workWearIssuedController.findWorkWearIssuedByEmployee().forEach(System.out::println);
+        workWearIssuedController.deleteWorkWearIssued();
+        workWearIssuedController.findAllWorkWearIssued().forEach(System.out::println);
+        System.out.println(workWearController.findById());
     }
 }

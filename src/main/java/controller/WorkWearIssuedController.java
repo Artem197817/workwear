@@ -1,5 +1,6 @@
 package controller;
 
+import demo.workwear.model.Employee;
 import demo.workwear.model.WorkWearIssued;
 import lombok.Data;
 import org.springframework.http.HttpEntity;
@@ -8,6 +9,7 @@ import service.WorkWearIssueService;
 import view.input.InputValue;
 import view.output.Output;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,22 +19,25 @@ public class WorkWearIssuedController {
     private RestTemplate restTemplate;
     private WorkWearIssueService workWearIssuedService;
     private final InputValue inputValue;
-    private  final Output output;
+    private final Output output;
     private final String urlWorkWearIssued = "http://localhost:8080/work_wear_issued";
 
-    public WorkWearIssuedController(RestTemplate restTemplate, WorkWearIssueService workWearIssuedService, InputValue inputValue, Output output) {
+
+    public WorkWearIssuedController(RestTemplate restTemplate, WorkWearIssueService workWearIssuedService,
+                                    InputValue inputValue, Output output) {
         this.restTemplate = restTemplate;
         this.workWearIssuedService = workWearIssuedService;
         this.inputValue = inputValue;
         this.output = output;
+
     }
 
-    public void saveWorkWearIssued () {
+    public void saveWorkWearIssued() {
 
         String url = urlWorkWearIssued + "/save_work_wear_issued";
         WorkWearIssued workWearIssued = workWearIssuedService.IssuedWorkWear();
         if (workWearIssued == null) return;
-        HttpEntity <WorkWearIssued> request = new HttpEntity<>(workWearIssued);
+        HttpEntity<WorkWearIssued> request = new HttpEntity<>(workWearIssued);
         System.out.println(request);
         try {
             String response = restTemplate.postForObject(url, request, String.class);
@@ -43,11 +48,26 @@ public class WorkWearIssuedController {
         }
     }
 
-    public List<WorkWearIssued> findAllWorkWearIssued(){
-        String url =urlWorkWearIssued+ "/work_wear_issued_all";
+    public List<WorkWearIssued> findAllWorkWearIssued() {
+        String url = urlWorkWearIssued + "/work_wear_issued_all";
         Object[] objects = restTemplate.getForEntity(url, Object[].class).getBody();
         assert objects != null;
-        return workWearIssuedService.parserWorkWearIssued (objects);
+        return workWearIssuedService.parserWorkWearIssued(objects);
+    }
+
+    public void deleteWorkWearIssued() {
+        String url = urlWorkWearIssued + "/delete_work_wear_issued/{id}";
+        this.restTemplate.delete(url, inputValue.inputLong("id удаляемой записи"));
+    }
+
+    public List<WorkWearIssued> findWorkWearIssuedByEmployee() {
+        Long employeeId = workWearIssuedService.findEmployeeId();
+        if (employeeId == -1L) return new ArrayList<>();
+        String url = urlWorkWearIssued + "/work_wear_issued_by_employee_id/{id}";
+        Object[] objects = restTemplate.getForEntity(url, Object[].class, employeeId).getBody();
+        assert objects != null;
+        return workWearIssuedService.parserWorkWearIssued(objects);
     }
 
 }
+

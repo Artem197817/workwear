@@ -1,6 +1,7 @@
 package service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import controller.EmployeeController;
 import controller.WorkWearController;
 import demo.workwear.model.Employee;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 import view.input.InputValue;
 import view.output.Output;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,8 +62,21 @@ public class WorkWearIssueService {
 
     public List<WorkWearIssued> parserWorkWearIssued (Object[] objects) {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         return Arrays.stream(objects)
                 .map(x -> mapper.convertValue(x, WorkWearIssued.class))
                 .collect(Collectors.toList());
+    }
+
+    public Long findEmployeeId () {
+        List<Employee> employees = employeeController.findEmployeeByLastName();
+        if (employees.isEmpty()) {
+            output.output("Нет сотрудника с такой фамилией");
+            return -1L;
+        }
+        output.outputList(employees);
+        output.output("Введите id сотрудника");
+       return employeeController.findById().getId();
+
     }
 }
