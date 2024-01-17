@@ -1,6 +1,5 @@
 package controller;
 
-import demo.workwear.model.Employee;
 import demo.workwear.model.WorkWearIssued;
 import lombok.Data;
 import org.springframework.http.HttpEntity;
@@ -20,25 +19,26 @@ public class WorkWearIssuedController {
     private WorkWearIssueService workWearIssuedService;
     private final InputValue inputValue;
     private final Output output;
+    private final EmployeeController employeeController;
     private final String urlWorkWearIssued = "http://localhost:8080/work_wear_issued";
 
 
     public WorkWearIssuedController(RestTemplate restTemplate, WorkWearIssueService workWearIssuedService,
-                                    InputValue inputValue, Output output) {
+                                    InputValue inputValue, Output output,EmployeeController employeeController) {
         this.restTemplate = restTemplate;
         this.workWearIssuedService = workWearIssuedService;
         this.inputValue = inputValue;
         this.output = output;
+        this.employeeController = employeeController;
 
     }
 
     public void saveWorkWearIssued() {
 
         String url = urlWorkWearIssued + "/save_work_wear_issued";
-        WorkWearIssued workWearIssued = workWearIssuedService.IssuedWorkWear();
+        WorkWearIssued workWearIssued = workWearIssuedService.issuedWorkWear();
         if (workWearIssued == null) return;
         HttpEntity<WorkWearIssued> request = new HttpEntity<>(workWearIssued);
-        System.out.println(request);
         try {
             String response = restTemplate.postForObject(url, request, String.class);
             output.output(response);
@@ -61,7 +61,7 @@ public class WorkWearIssuedController {
     }
 
     public List<WorkWearIssued> findWorkWearIssuedByEmployee() {
-        Long employeeId = workWearIssuedService.findEmployeeId();
+        Long employeeId = employeeController.findEmployeeId();
         if (employeeId == -1L) return new ArrayList<>();
         String url = urlWorkWearIssued + "/work_wear_issued_by_employee_id/{id}";
         Object[] objects = restTemplate.getForEntity(url, Object[].class, employeeId).getBody();

@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import service.WorkShoesTotalService;
 import view.input.InputValue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -31,9 +32,15 @@ public class WorkShoesTotalController {
 
     public List<WorkShoesTotal> findWorkShoesBySizeSortedNumber (){
        String url = urlWorkShoesTotal+"/work_shoes_total_size/{size}";
-       Object[] objects = restTemplate.getForEntity(url,Object[].class,inputValue.inputInt("Размер")).getBody();
-        assert objects != null;
-        return  workShoesTotalService.parsedWorkShoesTotal(objects);
+       try {
+           Object[] objects = restTemplate.getForEntity(url, Object[].class, inputValue.inputInt("Размер")).getBody();
+           assert objects != null;
+           return workShoesTotalService.parsedWorkShoesTotal(objects);
+       }catch (Exception e){
+           e.printStackTrace();
+           System.out.println("Неверно заданы параметры");
+       }
+       return new ArrayList<>();
     }
 
      public List<WorkShoesTotal> findAllWorkShoesSortedNumber(){

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import service.EmployeeService;
 import view.input.InputValue;
+import view.output.Output;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +22,13 @@ public class EmployeeController {
     private final String urlEmployee = "http://localhost:8080/employee";
     private final InputValue inputValue;
     private final EmployeeService employeeService;
+    private final Output output;
 
-    public EmployeeController(RestTemplate restTemplate, InputValue inputValue, EmployeeService employeeService) {
+    public EmployeeController(RestTemplate restTemplate, InputValue inputValue, EmployeeService employeeService, Output output) {
         this.restTemplate = restTemplate;
         this.inputValue = inputValue;
         this.employeeService = employeeService;
+        this.output = output;
     }
 
     public List<Employee> findAllEmployee() {
@@ -90,5 +93,23 @@ public class EmployeeController {
             System.out.println("Неверно заданы параметры");
         }
         return new ArrayList<>();
+    }
+    public Employee findEmployee() {
+
+        List<Employee> employeeList = findEmployeeByLastName();
+        output.outputList(employeeList);
+        Long idEmployee = inputValue.inputLong("Введите id сотрудника для выдачи спецодежды ");
+        return employeeList.stream().filter(employee -> employee.getId().equals(idEmployee)).findFirst().orElse(null);
+    }
+    public Long findEmployeeId () {
+        List<Employee> employees = findEmployeeByLastName();
+        if (employees.isEmpty()) {
+            output.output("Нет сотрудника с такой фамилией");
+            return -1L;
+        }
+        output.outputList(employees);
+        output.output("Введите id сотрудника");
+        return findById().getId();
+
     }
 }

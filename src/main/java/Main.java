@@ -1,4 +1,5 @@
 import controller.*;
+import demo.workwear.model.WorkShoesIssued;
 import demo.workwear.model.WorkShoesTotal;
 import org.springframework.web.client.RestTemplate;
 import service.*;
@@ -11,7 +12,7 @@ public class Main {
         InputValue inputValue = new InputValue();
         Output output = new Output();
         EmployeeService employeeService = new EmployeeService(inputValue);
-        EmployeeController employeeController = new EmployeeController(restTemplate,inputValue,employeeService);
+        EmployeeController employeeController = new EmployeeController(restTemplate,inputValue,employeeService,output);
         employeeController.findAllEmployee().forEach(System.out::println);
         ///employeeController.saveNewEmployee();
        /// employeeController.deleteEmployee();
@@ -36,17 +37,27 @@ public class Main {
        /// workWearTotalController.findWorkWearByTypeSortedNumber().forEach(System.out::println);
        // workWearTotalController.findWorkWearBySizeSortedNumber().forEach(System.out::println);
         WorkShoesTotalController workShoesTotalController = new WorkShoesTotalController(restTemplate,new WorkShoesTotalService(),inputValue);
-        //workShoesTotalController.findWorkShoesByTypeSortedNumber().forEach(System.out::println);
+        workShoesTotalController.findWorkShoesByTypeSortedNumber().forEach(System.out::println);
        /// workShoesTotalController.findAllWorkShoesSortedNumber().forEach(System.out::println);
-       /// workShoesTotalController.findWorkShoesBySizeSortedNumber().forEach(System.out::println);
+        workShoesTotalController.findWorkShoesBySizeSortedNumber().forEach(System.out::println);
         WorkWearIssueService workWearIssueService = new WorkWearIssueService(employeeController,inputValue,output,workWearController,workWearService);
         WorkWearIssuedController workWearIssuedController = new WorkWearIssuedController(restTemplate,workWearIssueService,
-                inputValue,output);
+                inputValue,output, employeeController);
         //workWearIssuedController.saveWorkWearIssued();
-        workWearIssuedController.findAllWorkWearIssued().forEach(System.out::println);
-        workWearIssuedController.findWorkWearIssuedByEmployee().forEach(System.out::println);
-        workWearIssuedController.deleteWorkWearIssued();
-        workWearIssuedController.findAllWorkWearIssued().forEach(System.out::println);
-        System.out.println(workWearController.findById());
+//        workWearIssuedController.findAllWorkWearIssued().forEach(System.out::println);
+//        workWearIssuedController.findWorkWearIssuedByEmployee().forEach(System.out::println);
+//        workWearIssuedController.deleteWorkWearIssued();
+//        workWearIssuedController.findAllWorkWearIssued().forEach(System.out::println);
+//        System.out.println(workWearController.findById());
+        WorkShoesIssuedService workShoesIssuedService = new WorkShoesIssuedService(employeeController,inputValue,output
+                ,workShoesController,workShoesService);
+        WorkShoesIssuedController workShoesIssuedController = new WorkShoesIssuedController(restTemplate,workShoesIssuedService
+                ,inputValue,output,employeeController);
+        workShoesIssuedController.saveWorkShoesIssued();
+        workShoesIssuedController.findAllWorkShoesIssued().forEach(System.out::println);
+        //workShoesIssuedController.findWorkShoesIssuedByEmployee().forEach(System.out::println);
+        // workShoesIssuedController.deleteWorkWearIssued();
+       // workShoesIssuedController.findAllWorkShoesIssued().forEach(System.out::println);
+
     }
 }

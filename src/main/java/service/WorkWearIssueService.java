@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import view.input.InputValue;
 import view.output.Output;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,8 +25,8 @@ public class WorkWearIssueService {
     private final WorkWearController workWearController;
     private final WorkWearService workWearService;
 
-    public WorkWearIssued IssuedWorkWear() {
-        Employee employee = findEmployee();
+    public WorkWearIssued issuedWorkWear() {
+        Employee employee = employeeController.findEmployee();
         if (employee == null) {
             output.output("Ошибка при выборе сотрудникв");
             return null;
@@ -52,13 +51,7 @@ public class WorkWearIssueService {
         return new WorkWearIssued(employee.getId(), idWorkWear,wearPeriod);
     }
 
-    private Employee findEmployee() {
 
-        List<Employee> employeeList = employeeController.findEmployeeByLastName();
-        output.outputList(employeeList);
-        Long idEmployee = inputValue.inputLong("Введите id сотрудника для выдачи спецодежды ");
-        return employeeList.stream().filter(employee -> employee.getId().equals(idEmployee)).findFirst().orElse(null);
-    }
 
     public List<WorkWearIssued> parserWorkWearIssued (Object[] objects) {
         ObjectMapper mapper = new ObjectMapper();
@@ -68,15 +61,4 @@ public class WorkWearIssueService {
                 .collect(Collectors.toList());
     }
 
-    public Long findEmployeeId () {
-        List<Employee> employees = employeeController.findEmployeeByLastName();
-        if (employees.isEmpty()) {
-            output.output("Нет сотрудника с такой фамилией");
-            return -1L;
-        }
-        output.outputList(employees);
-        output.output("Введите id сотрудника");
-       return employeeController.findById().getId();
-
-    }
 }
