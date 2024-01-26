@@ -24,7 +24,7 @@ public class WorkWearTotalController {
 
     public List<WorkWearTotal> findWorkWearByTypeSortedNumber() {
         String url = urlWorkWearTotal + "/work_wear_total_type/{workWearType}";
-        WorkWearType workWearType = WorkWearType.getType(inputValue.input("Тип"));
+        WorkWearType workWearType = WorkWearType.getType(inputValue.inputEnum("Тип",WorkWearType.class));
         Object[] objects = restTemplate.getForEntity(url, Object[].class, workWearType).getBody();
         assert objects != null;
         return workWearServiceTotal.parserWorkWearTotal(objects);
@@ -32,7 +32,7 @@ public class WorkWearTotalController {
 
     public List<WorkWearTotal> findWorkWearBySizeSortedNumber() {
         String url = urlWorkWearTotal + "/work_wear_total_size/{workWearSize}";
-        WorkWearSize workWearSize = WorkWearSize.getType(inputValue.input("Размер"));
+        WorkWearSize workWearSize = WorkWearSize.getType(inputValue.inputEnum("Размер",WorkWearSize.class));
         Object[] objects = restTemplate.getForEntity(url, Object[].class, workWearSize).getBody();
         assert objects != null;
         return workWearServiceTotal.parserWorkWearTotal(objects);

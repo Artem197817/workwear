@@ -24,7 +24,7 @@ public class WorkShoesTotalController {
 
    public List<WorkShoesTotal> findWorkShoesByTypeSortedNumber (){
        String url = urlWorkShoesTotal+"/work_shoes_total_type/{workShoesType}";
-       WorkShoesType workShoesType = WorkShoesType.getType(inputValue.input("Тип"));
+       WorkShoesType workShoesType = WorkShoesType.getType(inputValue.inputEnum("Тип",WorkShoesType.class));
        Object[] objects = restTemplate.getForEntity(url,Object[].class,workShoesType).getBody();
        assert objects != null;
         return  workShoesTotalService.parsedWorkShoesTotal(objects);

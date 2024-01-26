@@ -27,7 +27,7 @@ public class WorkShoesService {
         Map<String, String> mapValue = new HashMap<>();
         mapValue.put("modelWorkShoes", inputValue.input("Модель"));
         mapValue.put("workShoesSize", inputValue.input("Размер"));
-        mapValue.put("workShoesType", inputValue.input("Тип"));
+        mapValue.put("workShoesType", inputValue.inputEnum("Тип",WorkShoesType.class));
         int number = inputValue.inputInt("Количество");
         List<Map<String, String>> mapList = new ArrayList<>();
         for (int i = 0; i < number; i++) mapList.add(mapValue);

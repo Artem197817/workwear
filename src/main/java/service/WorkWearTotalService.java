@@ -16,8 +16,5 @@ public class WorkWearTotalService {
             return Arrays.stream(objects)
                     .map(o -> mapper.convertValue(o, WorkWearTotal.class))
                     .toList();
-           // System.out.println("Неверно заданы параметры");
-
-       // return new ArrayList<WorkWearTotal>();
     }
 }

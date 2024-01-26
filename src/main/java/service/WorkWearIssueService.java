@@ -33,7 +33,7 @@ public class WorkWearIssueService {
         }
         List<WorkWear> workWearList = workWearController.findAllWorkWearByWorkWearType();
         if (workWearList.isEmpty()) return null;
-        String size = inputValue.input("Введите требуемый размер одежды");
+        String size = inputValue.inputEnum("Введите требуемый размер одежды",WorkWearSize.class);
         WorkWearSize workWearSize = WorkWearSize.getType(size);
         List<WorkWear> workWearListSortedBySize = workWearService.sortedWorkWearNotIssue(workWearList).stream()
                 .filter(workWear -> workWear.getWorkWearSize().equals(workWearSize))

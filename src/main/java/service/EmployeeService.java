@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import demo.workwear.model.Employee;
+import demo.workwear.model.modelEnum.Company;
+import demo.workwear.model.modelEnum.ProductionDivision;
 import lombok.Data;
 import view.input.InputValue;
 
@@ -27,10 +29,11 @@ public class EmployeeService {
             mapValue.put("firstName",inputValue.input("Имя"));
             mapValue.put("lastName",inputValue.input("Фамилия"));
             mapValue.put("patronymic",inputValue.input("Отчество"));
-            mapValue.put("productionDivision",inputValue.input("Участок"));
-            mapValue.put("company",inputValue.input("Компания"));
+            mapValue.put("productionDivision",inputValue.inputEnum("Участок",ProductionDivision.class));
+            mapValue.put("company",inputValue.inputEnum("Компания",Company.class));
             mapValue.put("specialization",inputValue.input("Профессия"));
             return  mapValue;
         }
+
     }
 

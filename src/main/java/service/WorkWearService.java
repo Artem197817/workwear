@@ -4,6 +4,9 @@ package service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import demo.workwear.model.WorkWear;
 
+import demo.workwear.model.modelEnum.WorkWearHeight;
+import demo.workwear.model.modelEnum.WorkWearSize;
+import demo.workwear.model.modelEnum.WorkWearType;
 import lombok.AllArgsConstructor;
 import view.input.InputValue;
 
@@ -34,9 +37,9 @@ public class WorkWearService {
     public List<Map<String, String>> createMapNewWorkWear() {
         Map<String, String> mapValue = new HashMap<>();
         mapValue.put("modelWorkWear", inputValue.input("Модель"));
-        mapValue.put("workWearType", inputValue.input("Тип"));
-        mapValue.put("workWearSize", inputValue.input("Размер"));
-        mapValue.put("workWearHeight", inputValue.input("Рост"));
+        mapValue.put("workWearType", inputValue.inputEnum("Тип", WorkWearType.class));
+        mapValue.put("workWearSize", inputValue.inputEnum("Размер", WorkWearSize.class));
+        mapValue.put("workWearHeight", inputValue.inputEnum("Рост", WorkWearHeight.class));
         int number = inputValue.inputInt("Количество");
         List<Map<String, String>> mapList = new ArrayList<>();
         for (int i = 0; i < number; i++) mapList.add(mapValue);

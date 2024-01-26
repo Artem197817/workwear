@@ -59,7 +59,7 @@ public class WorkShoesIssuedController {
         }
     }
 
-    public void deleteWorkWearIssued() {
+    public void deleteWorShoesIssued() {
         String url = urlWorkShoesIssued + "/delete_work_shoes_issued/{id}";
         this.restTemplate.delete(url, inputValue.inputLong("id удаляемой записи"));
     }

@@ -40,13 +40,14 @@ public class EmployeeController {
 
     }
 
-    public void saveNewEmployee() {
+    public void saveNewEmployee (){
         String url = urlEmployee + "/save_employee";
-        HttpEntity<Map<String, String>> request = new HttpEntity<>(employeeService.createMapNewEmployee());
+        HttpEntity<Map<String,String>> request = new HttpEntity<>(employeeService.createMapNewEmployee());
         try {
             String response = restTemplate.postForObject(url, request, String.class);
             System.out.println(response);
         }catch (Exception e){
+            e.printStackTrace();
             System.out.println("Неверно заданы параметры");
         }
     }
@@ -73,7 +74,7 @@ public class EmployeeController {
 
     public List<Employee> findAllEmployeeByProductionDivision() {
         String url = urlEmployee + "/pd/{productionDivision}";
-        ProductionDivision productionDivision = ProductionDivision.getType(inputValue.input("Участок"));
+        ProductionDivision productionDivision = ProductionDivision.getType(inputValue.inputEnum("Участок",ProductionDivision.class));
         ResponseEntity<Object[]> responseEntity =
                 restTemplate.getForEntity(url, Object[].class,productionDivision);
         Object[] objects = responseEntity.getBody();

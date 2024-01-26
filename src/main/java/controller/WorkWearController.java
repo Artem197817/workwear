@@ -61,7 +61,7 @@ public class WorkWearController {
 
     public List<WorkWear> findAllWorkWearByWorkWearType() {
         String url = urlWorkWear + "/work_wear_type/{workWearType}";
-        WorkWearType workWearType = WorkWearType.getType(inputValue.input("Тип спецодежды"));
+        WorkWearType workWearType = WorkWearType.getType(inputValue.inputEnum("Тип спецодежды",WorkWearType.class));
         try {
             Object[] objects = restTemplate.getForEntity(url, Object[].class, workWearType).getBody();
             assert objects != null;

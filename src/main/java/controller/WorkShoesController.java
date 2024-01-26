@@ -50,6 +50,7 @@ public class WorkShoesController {
                 String response = restTemplate.postForObject(urlSave, request, String.class);
                 System.out.println(response);
             }catch (Exception e){
+                e.printStackTrace();
                 System.out.println("Неверно заданы параметры");
             }
         }
@@ -76,7 +77,7 @@ public class WorkShoesController {
 
     public List<WorkShoes> findAllWorkShoesByWorkShoesType() {
         String url = urlWorkShoes + "/work_shoes_type/{workShoesType}";
-        WorkShoesType workShoesType = WorkShoesType.getType(inputValue.input("Тип обуви"));
+        WorkShoesType workShoesType = WorkShoesType.getType(inputValue.inputEnum("Тип обуви",WorkShoesType.class));
         ResponseEntity<Object[]> responseEntity = restTemplate.getForEntity(url, Object[].class, workShoesType);
         Object[] objects = responseEntity.getBody();
         assert objects != null;
